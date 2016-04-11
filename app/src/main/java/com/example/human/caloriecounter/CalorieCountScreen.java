@@ -1,7 +1,10 @@
 package com.example.human.caloriecounter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -9,13 +12,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CalorieCountScreen extends AppCompatActivity {
 
-    Button button;
+    Button saveButton;
+    Button historyButton;
     SeekBar breakfastSeekBar;
     private boolean isTouch = false;
 
@@ -25,8 +32,12 @@ public class CalorieCountScreen extends AppCompatActivity {
         setContentView(R.layout.activity_calorie_count_screen);
 
         //saveButton code
-        button = (Button) findViewById(R.id.saveButton);
-        button.setOnClickListener(new saveButtonClicked());
+        saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new saveButtonClicked());
+
+        //historyButton code
+        historyButton = (Button) findViewById(R.id.historyButton);
+        historyButton.setOnClickListener(new historyButtonClicked());
 
         TextView breakfastTextView = (TextView) findViewById(R.id.breakfastTextView);
 
@@ -37,10 +48,12 @@ public class CalorieCountScreen extends AppCompatActivity {
 
         //Update date for user
         TextView currentDateTextView = (TextView) findViewById(R.id.currentDateTextView);
-        currentDateTextView.setText(""+formattedDate);
+        currentDateTextView.setText("" + formattedDate);
 
     }
 
+    //Update screen values whenever anything is clicked
+    //Workaround until I can get seek bars registering change
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -76,7 +89,20 @@ public class CalorieCountScreen extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
-            //Save user calorie count
+            File path = context.getFilesDir();
+        }
+    }
+
+    //Send user to History Screen
+    public class historyButtonClicked implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            //Create Intent
+            Intent myIntent = new Intent(CalorieCountScreen.this, History.class);
+            //Send User
+            CalorieCountScreen.this.startActivity(myIntent);
         }
     }
 }
