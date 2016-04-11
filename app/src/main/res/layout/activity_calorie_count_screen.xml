@@ -13,26 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Current Date"
-        android:id="@+id/currentDateTextView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Welcome Back!"
         android:id="@+id/userMessageTextField"
-        android:layout_below="@+id/currentDateTextView"
         android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Current Count = 0"
-        android:id="@+id/currentCountTextView"
+        android:id="@+id/currentCountTextView0"
         android:layout_below="@+id/userMessageTextField"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="33dp" />
@@ -43,7 +31,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Breakfast"
         android:id="@+id/textView4"
-        android:layout_below="@+id/currentCountTextView"
+        android:layout_below="@+id/currentCountTextView0"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="35dp" />
@@ -117,16 +105,6 @@
         android:max="1500"
         android:indeterminate="false" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="0"
-        android:id="@+id/dinnerTextView"
-        android:layout_below="@+id/lunchSeekBar"
-        android:layout_alignRight="@+id/dinnerSeekBar"
-        android:layout_alignEnd="@+id/dinnerSeekBar" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -144,5 +122,30 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dinnerTextView"
+        android:text="0"
+        android:layout_alignBottom="@+id/dinnerSeekBar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Current Count = 0"
+        android:id="@+id/currentCountTextView"
+        android:layout_above="@+id/saveButton"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

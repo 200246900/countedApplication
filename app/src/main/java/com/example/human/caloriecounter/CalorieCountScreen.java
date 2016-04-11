@@ -1,30 +1,30 @@
 package com.example.human.caloriecounter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class CalorieCountScreen extends AppCompatActivity {
 
     Button saveButton;
     Button historyButton;
-    SeekBar breakfastSeekBar;
+
     private boolean isTouch = false;
+    int breakfastCount, lunchCount, dinnerCount, totalDayCount, totalCount;
+
+    ArrayList<String> myArr = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,10 @@ public class CalorieCountScreen extends AppCompatActivity {
         historyButton = (Button) findViewById(R.id.historyButton);
         historyButton.setOnClickListener(new historyButtonClicked());
 
+        //
+        //SeekBar breakfastSeekBar = (SeekBar) findViewById(R.id.breakfastSeekBar);
+        //breakfastSeekBar.onProgressChanged(new breakfastSeekBarChanged());
+
         TextView breakfastTextView = (TextView) findViewById(R.id.breakfastTextView);
 
         //Create Date for user
@@ -47,8 +51,8 @@ public class CalorieCountScreen extends AppCompatActivity {
         String formattedDate = (date.toString()).substring(0, 10);
 
         //Update date for user
-        TextView currentDateTextView = (TextView) findViewById(R.id.currentDateTextView);
-        currentDateTextView.setText("" + formattedDate);
+        //TextView currentDateTextView = (TextView) findViewById(R.id.currentDateTextView);
+        //currentDateTextView.setText("" + formattedDate);
 
     }
 
@@ -83,13 +87,33 @@ public class CalorieCountScreen extends AppCompatActivity {
         return true;
     }
 
-
+    //This function will save the users calorie count
     public class saveButtonClicked implements View.OnClickListener
     {
         @Override
         public void onClick(View v)
         {
-            File path = context.getFilesDir();
+            TextView currentCountTextView = (TextView) findViewById(R.id.currentCountTextView);
+            DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
+            int day = datePicker.getDayOfMonth();
+            int month = datePicker.getMonth() + 1;
+            int year = datePicker.getYear();
+
+            //Get Progress
+            SeekBar breakfastSeekBar = (SeekBar) findViewById(R.id.breakfastSeekBar);
+            SeekBar lunchSeekBar = (SeekBar) findViewById(R.id.lunchSeekBar);
+            SeekBar dinnerSeekBar = (SeekBar) findViewById(R.id.dinnerSeekBar);
+
+            lunchCount = lunchSeekBar.getProgress();
+            dinnerCount = dinnerSeekBar.getProgress();
+
+            //Update Count
+            totalDayCount = breakfastCount + lunchCount + dinnerCount;
+            String writingProgress = month + "/" + day + "/" + year + ": " + totalDayCount;
+
+            myArr.add(writingProgress);
+            currentCountTextView.setText(writingProgress);
+
         }
     }
 
@@ -101,6 +125,8 @@ public class CalorieCountScreen extends AppCompatActivity {
         {
             //Create Intent
             Intent myIntent = new Intent(CalorieCountScreen.this, History.class);
+            myIntent.putExtra("myArr", myArr);
+
             //Send User
             CalorieCountScreen.this.startActivity(myIntent);
         }
