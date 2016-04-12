@@ -3,6 +3,7 @@ package com.example.human.caloriecounter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,16 +19,19 @@ import java.util.Date;
 
 public class CalorieCountScreen extends AppCompatActivity {
 
+    //Buttons
     Button saveButton;
     Button historyButton;
 
-    private boolean isTouch = false;
+    //Ints for counting
     int breakfastCount, lunchCount, dinnerCount, totalDayCount, totalCount;
 
+    //Arraylist for storing
     ArrayList<String> myArr = new ArrayList<String>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calorie_count_screen);
 
@@ -39,21 +43,85 @@ public class CalorieCountScreen extends AppCompatActivity {
         historyButton = (Button) findViewById(R.id.historyButton);
         historyButton.setOnClickListener(new historyButtonClicked());
 
-        //
-        //SeekBar breakfastSeekBar = (SeekBar) findViewById(R.id.breakfastSeekBar);
-        //breakfastSeekBar.onProgressChanged(new breakfastSeekBarChanged());
+        //SeekBars
+        SeekBar breakfastSeekBar = (SeekBar) findViewById(R.id.breakfastSeekBar);
+        breakfastSeekBar.setOnSeekBarChangeListener(new breakfastChange());
 
-        TextView breakfastTextView = (TextView) findViewById(R.id.breakfastTextView);
+        SeekBar lunchSeekBar = (SeekBar) findViewById(R.id.lunchSeekBar);
+        lunchSeekBar.setOnSeekBarChangeListener(new lunchChange());
 
-        //Create Date for user
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        Date date = new Date();
-        String formattedDate = (date.toString()).substring(0, 10);
+        SeekBar dinnerSeekBar = (SeekBar) findViewById(R.id.dinnerSeekBar);
+        dinnerSeekBar.setOnSeekBarChangeListener(new dinnerChange());
 
-        //Update date for user
-        //TextView currentDateTextView = (TextView) findViewById(R.id.currentDateTextView);
-        //currentDateTextView.setText("" + formattedDate);
+    }
 
+    //Called when user touches breakfast seekbar
+    //Updates the texview holding calorie count
+    private class breakfastChange implements SeekBar.OnSeekBarChangeListener
+    {
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+        {
+            //Assign Textview
+            TextView breakfastTextView = (TextView) findViewById(R.id.breakfastTextView);
+            //Log the progress for disaply
+            Log.d("DEBUG", "Progress is: " + progress);
+            //Update Calorie Count
+            breakfastTextView.setText("" + progress);
+            //Assign breakfast for counting total after
+            breakfastCount = progress;
+            //Update Current Count
+            TextView currentCountTextView = (TextView) findViewById(R.id.currentCountTextView);
+            currentCountTextView.setText("Current Count = " + (breakfastCount+lunchCount+dinnerCount));
+        }
+
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+        public void onStopTrackingTouch(SeekBar seekBar) {}
+    }
+
+    //Called when user touches lunch seekbar
+    //Updates the texview holding calorie count
+    private class lunchChange implements SeekBar.OnSeekBarChangeListener
+    {
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+        {
+            //Assign Textview
+            TextView lunchTextView = (TextView) findViewById(R.id.lunchTextView);
+            //Log the progress for disaply
+            Log.d("DEBUG", "Progress is: " + progress);
+            //Update Calorie Count
+            lunchTextView.setText("" + progress);
+            //Assign lunch for counting total after
+            lunchCount = progress;
+            //Update Current Count
+            TextView currentCountTextView = (TextView) findViewById(R.id.currentCountTextView);
+            currentCountTextView.setText("Current Count = " + (breakfastCount+lunchCount+dinnerCount));
+        }
+
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+        public void onStopTrackingTouch(SeekBar seekBar) {}
+    }
+
+    //Called when user touches dinner seekbar
+    //Updates the texview holding calorie count
+    private class dinnerChange implements SeekBar.OnSeekBarChangeListener
+    {
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+        {
+            //Assign Textview
+            TextView dinnerTextView = (TextView) findViewById(R.id.dinnerTextView);
+            //Log the progress for disaply
+            Log.d("DEBUG", "Progress is: " + progress);
+            //Update Calorie Count
+            dinnerTextView.setText("" + progress);
+            //Assign dinner for counting total after
+            dinnerCount = progress;
+            //Update Current Count
+            TextView currentCountTextView = (TextView) findViewById(R.id.currentCountTextView);
+            currentCountTextView.setText("Current Count = " + (breakfastCount+lunchCount+dinnerCount));
+        }
+
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+        public void onStopTrackingTouch(SeekBar seekBar) {}
     }
 
     //Update screen values whenever anything is clicked
@@ -61,29 +129,6 @@ public class CalorieCountScreen extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        //Text Views
-        TextView breakfastTextView = (TextView) findViewById(R.id.breakfastTextView);
-        TextView lunchTextView = (TextView) findViewById(R.id.lunchTextView);
-        TextView dinnerTextView = (TextView) findViewById(R.id.dinnerTextView);
-        TextView currentCountTextView = (TextView) findViewById(R.id.currentCountTextView);
-
-        //Create seekbars
-        SeekBar breakfastSeekBar = (SeekBar) findViewById(R.id.breakfastSeekBar);
-        SeekBar lunchSeekBar = (SeekBar) findViewById(R.id.lunchSeekBar);
-        SeekBar dinnerSeekBar = (SeekBar) findViewById(R.id.dinnerSeekBar);
-
-        //Get Progress
-        int breakfastValue = breakfastSeekBar.getProgress();
-        int lunchValue = lunchSeekBar.getProgress();
-        int dinnerValue = dinnerSeekBar.getProgress();
-
-        //Update Text Fields
-        breakfastTextView.setText(""+breakfastValue);
-        lunchTextView.setText(""+lunchValue);
-        dinnerTextView.setText(""+dinnerValue);
-
-        //Update Current Count
-        currentCountTextView.setText("Current Count = " + (breakfastValue+lunchValue+dinnerValue));
         return true;
     }
 
@@ -93,7 +138,9 @@ public class CalorieCountScreen extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
+            //Get textview
             TextView currentCountTextView = (TextView) findViewById(R.id.currentCountTextView);
+            //Get Date
             DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
             int day = datePicker.getDayOfMonth();
             int month = datePicker.getMonth() + 1;
@@ -103,7 +150,7 @@ public class CalorieCountScreen extends AppCompatActivity {
             SeekBar breakfastSeekBar = (SeekBar) findViewById(R.id.breakfastSeekBar);
             SeekBar lunchSeekBar = (SeekBar) findViewById(R.id.lunchSeekBar);
             SeekBar dinnerSeekBar = (SeekBar) findViewById(R.id.dinnerSeekBar);
-
+            breakfastCount = lunchSeekBar.getProgress();
             lunchCount = lunchSeekBar.getProgress();
             dinnerCount = dinnerSeekBar.getProgress();
 
@@ -111,7 +158,10 @@ public class CalorieCountScreen extends AppCompatActivity {
             totalDayCount = breakfastCount + lunchCount + dinnerCount;
             String writingProgress = month + "/" + day + "/" + year + ": " + totalDayCount;
 
+            //Add to array
             myArr.add(writingProgress);
+
+            //Update View for user
             currentCountTextView.setText(writingProgress);
 
         }
@@ -125,6 +175,8 @@ public class CalorieCountScreen extends AppCompatActivity {
         {
             //Create Intent
             Intent myIntent = new Intent(CalorieCountScreen.this, History.class);
+
+            //Attach Array
             myIntent.putExtra("myArr", myArr);
 
             //Send User
