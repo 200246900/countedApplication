@@ -16,6 +16,8 @@ public class History extends AppCompatActivity {
 
     //Back Button
     Button backButton;
+    boolean reload;
+    int totalCount;
 
     private ListView lv;
 
@@ -33,16 +35,21 @@ public class History extends AppCompatActivity {
         List<String> myArr = (ArrayList<String>) getIntent().getSerializableExtra("myArr");
 
         //Add some records for testing and viewing
-        myArr.add("4/7/2016: 415");
-        myArr.add("4/6/2016: 523");
-        myArr.add("4/5/2016: 644");
-        myArr.add("4/4/2016: 1445");
+        //myArr.add("4/7/2016: 415");
+        //myArr.add("4/6/2016: 523");
+        //myArr.add("4/5/2016: 644");
+        //myArr.add("4/4/2016: 1445");
 
         //COnvert array to list item
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myArr );
 
         //Set adapter
         lv.setAdapter(arrayAdapter);
+
+        //Grab total count
+        totalCount = getIntent().getIntExtra("totalCount",0);
+        TextView dailyAverageTextView = (TextView) findViewById(R.id.dailyAverageTextView);
+        dailyAverageTextView.setText("Daily Average = " + (totalCount/myArr.size()));
     }
 
     //Send user to Calorie Counter Screen
@@ -51,8 +58,17 @@ public class History extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
+            //Set reload
+            reload = true;
+
             //Create Intention
             Intent myIntent = new Intent(History.this, CalorieCountScreen.class);
+
+            //Attach Array
+            myIntent.putExtra("myArr", getIntent().getSerializableExtra("myArr"));
+            myIntent.putExtra("reload", reload);
+            myIntent.putExtra("totalCount", totalCount);
+
             //Call to send
             History.this.startActivity(myIntent);
         }

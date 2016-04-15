@@ -8,21 +8,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class CalorieCountScreen extends AppCompatActivity {
 
     //Buttons
     Button saveButton;
     Button historyButton;
-
+    boolean isReloaded = false;
     //Ints for counting
     int breakfastCount, lunchCount, dinnerCount, totalDayCount, totalCount;
 
@@ -53,6 +48,16 @@ public class CalorieCountScreen extends AppCompatActivity {
         SeekBar dinnerSeekBar = (SeekBar) findViewById(R.id.dinnerSeekBar);
         dinnerSeekBar.setOnSeekBarChangeListener(new dinnerChange());
 
+        //Get boolean value if activity has been reloaded
+        isReloaded = getIntent().getBooleanExtra("reload", false);
+
+        //If it has been reloaded grab array sent
+        if (isReloaded==true)
+        {
+            isReloaded=false;
+            myArr = getIntent().getStringArrayListExtra("myArr");
+            totalCount = getIntent().getIntExtra("totalCount",0);
+        }
     }
 
     //Called when user touches breakfast seekbar
@@ -140,6 +145,7 @@ public class CalorieCountScreen extends AppCompatActivity {
         {
             //Get textview
             TextView currentCountTextView = (TextView) findViewById(R.id.currentCountTextView);
+
             //Get Date
             DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
             int day = datePicker.getDayOfMonth();
@@ -150,7 +156,7 @@ public class CalorieCountScreen extends AppCompatActivity {
             SeekBar breakfastSeekBar = (SeekBar) findViewById(R.id.breakfastSeekBar);
             SeekBar lunchSeekBar = (SeekBar) findViewById(R.id.lunchSeekBar);
             SeekBar dinnerSeekBar = (SeekBar) findViewById(R.id.dinnerSeekBar);
-            breakfastCount = lunchSeekBar.getProgress();
+            breakfastCount = breakfastSeekBar.getProgress();
             lunchCount = lunchSeekBar.getProgress();
             dinnerCount = dinnerSeekBar.getProgress();
 
@@ -162,8 +168,10 @@ public class CalorieCountScreen extends AppCompatActivity {
             myArr.add(writingProgress);
 
             //Update View for user
-            currentCountTextView.setText(writingProgress);
+            currentCountTextView.setText("Saved!");
 
+            //Update total count for average
+            totalCount = totalCount + totalDayCount;
         }
     }
 
@@ -178,9 +186,20 @@ public class CalorieCountScreen extends AppCompatActivity {
 
             //Attach Array
             myIntent.putExtra("myArr", myArr);
+            myIntent.putExtra("totalCount", totalCount);
 
             //Send User
             CalorieCountScreen.this.startActivity(myIntent);
         }
+    }
+
+    //Save Array
+    public void saveArray()
+    {
+    }
+
+    //Load Array
+    public static void loadArray()
+    {
     }
 }
