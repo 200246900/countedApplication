@@ -1,3 +1,8 @@
+// Tyler Cadeau
+// 200246900
+// 2016/04/18
+// Splash.java is the splash screen which displays my logo with a simple animation
+
 package com.example.human.caloriecounter;
 
 import android.content.Intent;
@@ -23,8 +28,11 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
 
+        //Grab Logo
         final ImageView logo = (ImageView) findViewById(R.id.imageView);
+        //Animation
         final Animation animation = AnimationUtils.loadAnimation(getBaseContext(),R.anim.rotate);
+        //Fade
         final Animation animation2 = AnimationUtils.loadAnimation(getBaseContext(),R.anim.abc_fade_out);
 
         logo.startAnimation(animation);
@@ -36,8 +44,11 @@ public class Splash extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                //Start animation
                 logo.startAnimation(animation2);
+                //Finish
                 finish();
+                //Declare intent and start main screen
                 Intent i = new Intent(Splash.this, CalorieCountScreen.class);
                 startActivity(i);
             }

@@ -1,3 +1,8 @@
+// Tyler Cadeau
+// 200246900
+// 2016/04/18
+// CalorieCounter.java is the main screen where a user can input calorie counts and save to a history
+
 package com.example.human.caloriecounter;
 
 import android.content.Intent;
@@ -56,6 +61,7 @@ public class CalorieCountScreen extends AppCompatActivity {
         {
             isReloaded=false;
             myArr = getIntent().getStringArrayListExtra("myArr");
+            //total count for calcing average
             totalCount = getIntent().getIntExtra("totalCount",0);
         }
     }

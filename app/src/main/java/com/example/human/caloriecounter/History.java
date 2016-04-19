@@ -1,3 +1,8 @@
+// Tyler Cadeau
+// 200246900
+// 2016/04/18
+// History.java is the secondary screen where the user can view their history
+
 package com.example.human.caloriecounter;
 
 import android.content.Intent;
